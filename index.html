@@ -11,10 +11,10 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
-    <link rel="stylesheet" href="JAVA SCRIPT\leaflet-panel-layers-master\src\leaflet-panel-layers.css" />
+    <link rel="stylesheet" href="src\leaflet-panel-layers.css" />
 
 <!-- Load Plugin leaflet.ajax -->
-    <script src="JAVA SCRIPT\leaflet.ajax.js"></script>
+    <script src="leaflet.ajax.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/stefanocudini/leaflet-panel-layers/src/leaflet-panel-layers.js"></script>
 
 <!-- UKURAN PETA -->
@@ -143,22 +143,22 @@
 		{
 			name: "Digitasi Daerah 1",
 			icon: iconByName('Digitasi Daerah 1'),
-			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/surabaya revisi.geojson"],{onEachFeature:popUp,style: myStyle,pointToLayer: featureToMarker}).addTo(map)
+			layer: new L.GeoJSON.AJAX(["surabaya revisi.geojson"],{onEachFeature:popUp,style: myStyle,pointToLayer: featureToMarker}).addTo(map)
 		},
 		{
 			name: "Digitasi Daerah 2",
 			icon: iconByName('Digitasi Daerah 2'),
-			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/surabaya revisi 2.geojson"],{onEachFeature:popUpLayer2,style: myStyle2,pointToLayer: featureToMarker}).addTo(map)
+			layer: new L.GeoJSON.AJAX(["surabaya revisi 2.geojson"],{onEachFeature:popUpLayer2,style: myStyle2,pointToLayer: featureToMarker}).addTo(map)
 		},
 		{
 			name: "Batas Digitasi Daerah 1",
 			icon: iconByName('Batas Digitasi Daerah 1'),
-			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/batas daerah digitasi 1.geojson"],{onEachFeature:popUpLayer4,style: myStyle4,pointToLayer: featureToMarker}).addTo(map)
+			layer: new L.GeoJSON.AJAX(["batas daerah digitasi 1.geojson"],{onEachFeature:popUpLayer4,style: myStyle4,pointToLayer: featureToMarker}).addTo(map)
 		},
 		{
 			name: "Batas Digitasi Daerah 2",
 			icon: iconByName('Batas Digitasi Daerah 2'),
-			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/batas daerah digitasi 2.geojson"],{onEachFeature:popUpLayer3,style: myStyle3,pointToLayer: featureToMarker}).addTo(map)
+			layer: new L.GeoJSON.AJAX(["batas daerah digitasi 2.geojson"],{onEachFeature:popUpLayer3,style: myStyle3,pointToLayer: featureToMarker}).addTo(map)
 		}
 	];
 
