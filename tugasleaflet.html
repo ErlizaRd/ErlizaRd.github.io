@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- AWAL PEMBUATAN SCRIPT -->
+	<title>Leaflet Web Map</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+<!-- Load Library Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <link rel="stylesheet" href="JAVA SCRIPT\leaflet-panel-layers-master\src\leaflet-panel-layers.css" />
+
+<!-- Load Plugin leaflet.ajax -->
+    <script src="JAVA SCRIPT\leaflet.ajax.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/stefanocudini/leaflet-panel-layers/src/leaflet-panel-layers.js"></script>
+
+<!-- UKURAN PETA -->
+	<style>
+        #map {
+        height: 100vh;
+        }
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		
+// TAMPILAN DASAR PETA (BASEMAP)
+		var map = L.map('map',{
+					center: [-7.3257833,112.6855477],
+					zoom:  14
+					});
+					
+		var LayerKita=L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">openStreetMap</a> contributors'
+			});
+		map.addLayer(LayerKita);
+			
+		var marker = L.marker([-7.317398, 112.661773])
+					.addTo(map);
+					
+		var popup = L.popup()
+					.setLatLng([-7.321144, 112.687179])
+					.setContent("Digitasi Surabaya")
+					.openOn(map);
+
+// WARNA TAMPILAN LAYER
+	var myStyle = {
+    	"color": "#ff7800",
+   		"weight": 2,
+    	"opacity": 0.5
+	};
+	var myStyle2 = {
+    	"color": "#ff0000",
+   		"weight": 2,
+    	"opacity": 0.5
+	};
+	var myStyle3 = {
+    	"color": "#ff0001",
+   		"weight": 5,
+    	"opacity": 0.5
+	};
+	var myStyle4 = {
+    	"color": "#ff7810",
+   		"weight": 5,
+    	"opacity": 0.5
+	};
+
+// TULISAN DESKRIPSI POPUP LAYER
+	function popUp(f,l){
+		var out = [];
+			if (f.properties){
+			out.push("Digitasi Daerah 1");
+			out.push("Nama Objek: "+f.properties['OBJECTID']);
+			out.push("Luas Area: "+f.properties['Shape_Area']);
+			l.bindPopup(out.join("<br />"));
+		}
+	}
+	function popUpLayer2(f, l) {
+    	var out = [];
+    		if (f.properties) {
+      		out.push("Digitasi Daerah 2");
+			out.push("Nama Objek: "+f.properties['OBJECTID']);
+			out.push("Luas Area: "+f.properties['Shape_Area']);
+        	l.bindPopup(out.join("<br />"));
+    	}
+	}
+	function popUpLayer3(f, l) {
+    	var out = [];
+    		if (f.properties) {
+      		out.push("Batas Daerah Digitasi 2");
+        	l.bindPopup(out.join("<br />"));
+    	}
+	}
+	function popUpLayer4(f, l) {
+    	var out = [];
+    		if (f.properties) {
+      		out.push("Batas Daerah Digitasi 1");
+        	l.bindPopup(out.join("<br />"));
+    	}
+	}
+
+// PLUGIN LEGENDA
+	function iconByName(name) {
+		return '<i class="icon icon-'+name+'"></i>';
+	}	
+
+	function featureToMarker(feature, latlng) {
+		return L.marker(latlng, {
+			icon: L.divIcon({
+				className: 'marker-'+feature.properties.amenity,
+				html: iconByName(feature.properties.amenity),
+				iconUrl: '../images/markers/'+feature.properties.amenity+'.png',
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+				shadowSize: [41, 41]
+			})
+		});
+	}
+
+//BASEMAP LAYER
+	var baseLayers = [
+		{
+			name: "OpenStreetMap",
+			layer: LayerKita
+		},
+		{
+			name: "Esri World Imagery",
+			layer: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
+		},
+		{
+			name: "Outdoors",
+			layer: L.tileLayer('https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png')
+		}
+	];
+
+//LAYER YANG DITAMPILKAN
+	var overLayers = [
+		{
+			name: "Digitasi Daerah 1",
+			icon: iconByName('Digitasi Daerah 1'),
+			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/surabaya revisi.geojson"],{onEachFeature:popUp,style: myStyle,pointToLayer: featureToMarker}).addTo(map)
+		},
+		{
+			name: "Digitasi Daerah 2",
+			icon: iconByName('Digitasi Daerah 2'),
+			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/surabaya revisi 2.geojson"],{onEachFeature:popUpLayer2,style: myStyle2,pointToLayer: featureToMarker}).addTo(map)
+		},
+		{
+			name: "Batas Digitasi Daerah 1",
+			icon: iconByName('Batas Digitasi Daerah 1'),
+			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/batas daerah digitasi 1.geojson"],{onEachFeature:popUpLayer4,style: myStyle4,pointToLayer: featureToMarker}).addTo(map)
+		},
+		{
+			name: "Batas Digitasi Daerah 2",
+			icon: iconByName('Batas Digitasi Daerah 2'),
+			layer: new L.GeoJSON.AJAX(["DATA GEOJSN/batas daerah digitasi 2.geojson"],{onEachFeature:popUpLayer3,style: myStyle3,pointToLayer: featureToMarker}).addTo(map)
+		}
+	];
+
+	var panelLayers = new L.Control.PanelLayers(baseLayers, overLayers);
+
+	map.addControl(panelLayers);
+	</script>
+</body>
+</html>
